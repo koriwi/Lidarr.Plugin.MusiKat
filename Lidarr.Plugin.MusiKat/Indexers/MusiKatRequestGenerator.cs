@@ -17,7 +17,13 @@ namespace NzbDrone.Core.Indexers.MusiKat
 
         public virtual IndexerPageableRequestChain GetRecentRequests()
         {
-            return new IndexerPageableRequestChain();
+            // Used by the indexer connection test (and optionally by RSS sync).
+            var chain = new IndexerPageableRequestChain();
+            var url = $"{Settings.BaseUrl.TrimEnd('/')}/api/new-releases?provider={MusiKatFormats.ProviderValue(Settings.Provider)}&limit=20";
+
+            chain.AddTier(new[] { new IndexerRequest(url, HttpAccept.Json) });
+
+            return chain;
         }
 
         public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
