@@ -34,6 +34,11 @@ scripts/build-plugin.sh
 
 The installable zip appears at `artifacts/Lidarr.Plugin.MusiKat.net8.0.zip`.
 
+The build pins the Lidarr AssemblyVersion to `3.0.0.4855` before compiling.
+A local build otherwise fills the `10.0.0.*` wildcard with a high version
+that the running Lidarr rejects. The plugin must reference a Lidarr version
+at or below the running instance.
+
 ## Install
 
 ### Via GitHub release

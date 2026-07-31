@@ -10,6 +10,13 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT="$REPO_ROOT/Lidarr.Plugin.MusiKat/Lidarr.Plugin.MusiKat.csproj"
 PUBLISH_DIR="$REPO_ROOT/Lidarr.Plugin.MusiKat/bin/Release/net8.0/publish"
 ZIP_PATH="$REPO_ROOT/artifacts/Lidarr.Plugin.MusiKat.net8.0.zip"
+LIDARR_PROPS="$REPO_ROOT/Lidarr/src/Directory.Build.props"
+
+# The plugin references Lidarr.Core at the AssemblyVersion the Lidarr source
+# produces. A local build fills the '10.0.0.*' wildcard with a high version
+# that the running Lidarr rejects (its Lidarr.Core is 3.1.3.4987). Pin the
+# version to a known-good low value, exactly like the Deemix plugin CI does.
+PINNED_VERSION="3.0.0.4855"
 
 if [ ! -d "$REPO_ROOT/Lidarr/.git" ]; then
     echo "Missing Lidarr source. Run scripts/fetch-lidarr.sh first."
@@ -17,6 +24,11 @@ if [ ! -d "$REPO_ROOT/Lidarr/.git" ]; then
 fi
 
 cd "$REPO_ROOT"
+
+# Pin the Lidarr AssemblyVersion so the plugin references a version the
+# running Lidarr can satisfy.
+sed -i "s|<AssemblyVersion>[0-9.]*\*</AssemblyVersion>|<AssemblyVersion>$PINNED_VERSION</AssemblyVersion>|" "$LIDARR_PROPS"
+grep -q "$PINNED_VERSION" "$LIDARR_PROPS" || { echo "Failed to pin Lidarr version"; exit 1; }
 
 # EnableAnalyzers=false and TreatWarningsAsErrors=false avoid StyleCop
 # failures in Lidarr's own projects under newer .NET SDKs.
