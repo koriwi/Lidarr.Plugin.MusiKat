@@ -3,9 +3,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>NzbDrone.Plugin.MusiKat</RootNamespace>
     <AssemblyName>Lidarr.Plugin.MusiKat</AssemblyName>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
-    <InformationalVersion>0.1.0</InformationalVersion>
+    <AssemblyVersion>0.1.1.0</AssemblyVersion>
+    <FileVersion>0.1.1.0</FileVersion>
+    <InformationalVersion>0.1.1</InformationalVersion>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -19,16 +19,4 @@
       <ExcludeAssets>runtime</ExcludeAssets>
     </ProjectReference>
   </ItemGroup>
-
-  <Target Name="ZipOutputPath" AfterTargets="Publish">
-    <PropertyGroup>
-      <ZipStaging>$(BaseIntermediateOutputPath)plugin-zip\</ZipStaging>
-      <ZipDestination>$(MSBuildProjectDirectory)\..\artifacts\Lidarr.Plugin.MusiKat.net8.0.zip</ZipDestination>
-    </PropertyGroup>
-    <RemoveDir Directories="$(ZipStaging)" />
-    <MakeDir Directories="$(ZipStaging)" />
-    <MakeDir Directories="$(MSBuildProjectDirectory)\..\artifacts" />
-    <Copy SourceFiles="$(PublishDir)\Lidarr.Plugin.MusiKat.dll;$(PublishDir)\Lidarr.Plugin.MusiKat.pdb" DestinationFolder="$(ZipStaging)" />
-    <ZipDirectory SourceDirectory="$(ZipStaging)" DestinationFile="$(ZipDestination)" Overwrite="true" />
-  </Target>
 </Project>
