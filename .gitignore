@@ -1,0 +1,14 @@
+# Build output
+artifacts/
+bin/
+obj/
+_temp/
+_output/
+
+# Lidarr source (fetched by scripts/fetch-lidarr.sh)
+Lidarr/
+
+# Python / misc
+__pycache__/
+*.pyc
+.DS_Store
